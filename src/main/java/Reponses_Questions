@@ -1,7 +1,8 @@
 Il y a 3 baguettes (ref Schema_Table).
 
 Question 1:
-
+Les acces concurrents sont gérer avec les fonction "wait" et "notifyAll"
 
 Question 2 :
-
+Le blocage est un deadlock.
+Chaque philosophe attend une baguette détenue par un autre, donc personne ne peut avancer.
