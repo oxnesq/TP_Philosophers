@@ -26,6 +26,10 @@ public class ChopStick {
         notifyAll(); // On prévient ceux qui attendent que la baguette soit libre
     }
 
+    public Boolean isFree(){
+        return iAmFree;
+    }
+
    @Override
     public String toString() {
         return "baguette #" + myNumber;

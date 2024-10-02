@@ -36,31 +36,46 @@ public class Philosopher extends Thread {
                 // Aléatoirement prendre la baguette de gauche puis de droite ou l'inverse
                 switch(new Random().nextInt(2)) {
                     case 0:
-                        myLeftStick.take();
-                        think(); // pour augmenter la probabilité d'interblocage
-                        myRightStick.take();
+                        takeSticks(myLeftStick, myRightStick);
                         break;
                     case 1:
-                        myRightStick.take();
-                        think(); // pour augmenter la probabilité d'interblocage
-                        myLeftStick.take();
+                        takeSticks(myRightStick, myLeftStick);
                 }
-                // Si on arrive ici, on a pu "take" les 2 baguettes
-                eat();
-                // On libère les baguettes :
-                myLeftStick.release();
-                myRightStick.release();
-                // try again
             } catch (InterruptedException ex) {
                 Logger.getLogger("Table").log(Level.SEVERE, "{0} Interrupted", this.getName());
             }
         }
     }
 
+    public void takeSticks(ChopStick myFristStick, ChopStick mySecondStick) throws InterruptedException {
+        if (myFristStick.isFree()){
+            myFristStick.take();
+            if(mySecondStick.isFree()){
+                eatAndRelease(myFristStick,mySecondStick);
+            } else {
+            think();
+            if(mySecondStick.isFree()){
+                eatAndRelease(myFristStick,mySecondStick);
+            } else {
+                myFristStick.release();
+            }
+        }}
+    }
+
+    public void eatAndRelease(ChopStick myFristStick, ChopStick mySecondStick) throws InterruptedException {
+        mySecondStick.take();
+        eat();
+        myFristStick.release();
+        mySecondStick.release();
+    }
+
+
     // Permet d'interrompre le philosophe "proprement" :
     // Il relachera ses baguettes avant de s'arrêter
     public void leaveTable() {
         running = false;
     }
+
+
 
 }
